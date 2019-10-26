@@ -7,30 +7,28 @@ public class PPR extends Parser {
 	
 	@Override
 	public void parse() throws IOException {
-		// TODO Auto-generated method stub
 		analisaPrograma();	
 	}	
 	
 	public boolean analisaPrograma() throws IOException {
 		buscaToken();
 		if(t.tipo == Tipo.SPROGRAMA) {
-			System.out.println(t.tipo + " ");
+			System.out.println(t.tipo);
 			buscaToken();
 			if (t.tipo == Tipo.SIDENTIFICADOR) {
-				System.out.println(t.tipo +": " +t.lexema +' ');
+				System.out.println(t.tipo +": " + t.lexema);
 				//Adiciona identficados a tabela de simbolos
 				ts.ts.put(t.lexema, t);
 				buscaToken();
 				if(t.tipo == Tipo.SPONTO_E_VIRGULA) {
-					System.out.println(t.tipo + " ");
+					System.out.println(t.tipo);
 					if(analisaBloco()) {
-						System.out.println("SBLOCO ");
 						buscaToken();
 						if(t.tipo == Tipo.SPONTO) {
-							System.out.println(t.tipo + " ");
+							System.out.println(t.tipo);
 							return true;
 						} else {
-							return erro("Ponto final nao encontrado");
+							return erro("Ponto final esperado");
 						}
 					} else {
 						return erro("Bloco principal nao encontrado");
@@ -48,9 +46,23 @@ public class PPR extends Parser {
 	}
 	
 	public boolean analisaBloco() throws IOException {
+		buscaToken();
+		if(t.tipo == Tipo.SINICIO) {
+			System.out.println(t.tipo);
+			buscaToken();
+			if(analisaEtapaDeclaracaoDeVariaveis()) {
+				buscaToken();
+				if(t.tipo == Tipo.SFIM) {
+					System.out.println(t.tipo);
+					return true;
+				} else {
+					return erro("Fim do bloco esperado");
+				}
+			}
+		} else {
+			return erro("Inicio do bloco esperado");
+		}
 		return true;
-		//buscaToken();
-		//return analisaEtapaDeclaracaoDeVariaveis();
 	}
 	
 	public boolean analisaEtapaDeclaracaoDeVariaveis() throws IOException {
@@ -60,21 +72,55 @@ public class PPR extends Parser {
 			if (t.tipo == Tipo.SIDENTIFICADOR) {
 				System.out.println(t.tipo +": " +t.lexema +' ');
 				while(t.tipo == Tipo.SIDENTIFICADOR) {
-					//analisaVariaveis();
-					if(t.tipo == Tipo.SPONTO_E_VIRGULA) {
-						System.out.println(t.tipo + " ");
+					if(analisaVariaveis()) {
 						buscaToken();
-						return true;
+						if(t.tipo == Tipo.SPONTO_E_VIRGULA) {
+							System.out.println(t.tipo + " ");
+							buscaToken();
+							return true;
+						} else {
+							return erro("Ponto e virgula esperado");
+						}
 					} else {
-						return erro("Ponto e virgula esperado");
+						return erro("Erro na declaracao de variaveis");
 					}
 				}
 			} else {
 				return erro("Identificador esperado");
 			}
-		} else {
-			return erro("Var esperado");
 		}
 		return true;
-	}	
+	}
+	
+	public boolean analisaVariaveis() throws IOException {
+		do {
+			if(t.tipo == Tipo.SIDENTIFICADOR) {
+				//pesquisa variavel duplicada
+				//se nao encontrou entao
+				//Adiciona identficados a tabela de simbolos
+				ts.ts.put(t.lexema, t);
+				buscaToken();
+				if(t.tipo == Tipo.SVIRGULA || t.tipo == Tipo.STIPO) {
+					System.out.println(t.tipo + " ");
+					if(t.tipo == Tipo.SVIRGULA) {
+						System.out.println(t.tipo + " ");
+						buscaToken();
+						if(t.tipo == Tipo.STIPO) {
+							return erro("Token incorreto encontrado.");
+						}
+					}						
+				} else {
+					return erro("Declaracao de variavel incorreta");
+				}
+				//fecha if da duplicidade
+				//else
+				//retorna erro de duplicidade encontrada
+			} else {
+				return erro("Identificador esperado");
+			}
+		} while (t.tipo != Tipo.STIPO);
+		buscaToken();
+		//analisa tipo		
+		return true;
+	}
 }

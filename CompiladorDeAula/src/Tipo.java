@@ -2,7 +2,7 @@
 public enum Tipo {
 	SPROGRAMA,				//programa
 	SVAR,					//var
-	SDOISPONTOS,			//:
+	SVIRGULA,				//,
 	SINICIO,				//inicio
 	SFIM,					//fim
 	SATRIBUICAO,			//:=

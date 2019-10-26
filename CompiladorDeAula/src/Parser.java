@@ -2,15 +2,15 @@ import java.io.IOException;
 
 public abstract class Parser {
 	/**
-	 * Tabela de Símbolos
+	 * Tabela de Simbolos
 	 */
 	TS ts;
 	/**
-	 * Analisador Léxico
+	 * Analisador Lexico
 	 */
 	Lexico lexer;
 	/**
-	 * Token corrente que está sendo analisado
+	 * Token corrente que esta sendo analisado
 	 */
 	Token t;
 	
@@ -20,12 +20,12 @@ public abstract class Parser {
 	}
 
 	/**
-	 * O método deve ser implementado pelo parser concreto
+	 * O metodo deve ser implementado pelo parser concreto
 	 */
 	public abstract void parse() throws IOException;
 	
 	/**
-	 * Obtém o próximo token
+	 * Obtem o proximo token
 	 * @throws IOException
 	 */
 	public void buscaToken() throws IOException {
@@ -33,7 +33,7 @@ public abstract class Parser {
 	}
 	
 	public boolean erro(String erro) {
-		System.out.println(erro + ": " + t.linha + ", " + t.coluna);
+		System.out.println(erro + ": Linha " + t.linha + ", Coluna " + t.coluna);
 		return false;
 	}
 }

@@ -80,6 +80,8 @@ public class Lexico {
 						return new Token(Tipo.SDIVISAO,"/", linha, coluna);
 					}else if (ch ==';') {
 						return new Token(Tipo.SPONTO_E_VIRGULA,";", linha, coluna);
+					}else if (ch ==',') {
+						return new Token(Tipo.SVIRGULA,",", linha, coluna);
 					}else if (ch =='.') {
 						return new Token(Tipo.SPONTO,".", linha, coluna);
 					}else if (ch =='(') {
@@ -97,9 +99,9 @@ public class Lexico {
 				case 1:
 					estado = 0;
 					if(ch == '='){
-						return new Token(Tipo.STIPO, ":=", linha, coluna);
+						return new Token(Tipo.SATRIBUICAO, ":=", linha, coluna);
 					}else{
-						 return new Token(Tipo.SATRIBUICAO, ":", linha, coluna); 
+						 return new Token(Tipo.STIPO, ":", linha, coluna); 
 					}					
 				case 12:
 					if(Character.isDigit(ch)){
@@ -119,6 +121,7 @@ public class Lexico {
 							case "inteiro": return new Token(Tipo.SINTEIRO, lexema, linha, coluna);
 							case "inicio": return new Token(Tipo.SINICIO, lexema, linha, coluna);
 							case "fim": return new Token(Tipo.SFIM, lexema, linha, coluna);
+							case "var": return new Token(Tipo.SVAR, lexema, linha, coluna);
 							default: return new Token(Tipo.SIDENTIFICADOR, lexema, linha, coluna);
 						}
 					}
