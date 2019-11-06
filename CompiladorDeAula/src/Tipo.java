@@ -9,6 +9,7 @@ public enum Tipo {
 	STIPO,					//:
 	SESCREVA,				//escreva
 	SINTEIRO,				//inteiro
+	SBOOLEANO,				//booleano
 	SPONTO_E_VIRGULA,		//;
 	SPONTO,					//.
 	SMAIS,					//+
