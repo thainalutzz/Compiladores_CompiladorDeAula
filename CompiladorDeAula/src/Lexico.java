@@ -20,7 +20,7 @@ public class Lexico {
 	int coluna = 1;
 	
 	public Lexico(String arquivo) throws UnsupportedEncodingException, FileNotFoundException {
-		//PushbackReader será usado para devolver caracter ao stream
+		//PushbackReader serÃ¡ usado para devolver caracter ao stream
 				r = new PushbackReader(
 						new BufferedReader(
 								new InputStreamReader(
@@ -119,6 +119,7 @@ public class Lexico {
 						switch(lexema){
 							case "programa": return new Token(Tipo.SPROGRAMA, lexema, linha, coluna);
 							case "inteiro": return new Token(Tipo.SINTEIRO, lexema, linha, coluna);
+							case "booleano": return new Token(Tipo.SBOOLEANO, lexema, linha, coluna);
 							case "inicio": return new Token(Tipo.SINICIO, lexema, linha, coluna);
 							case "fim": return new Token(Tipo.SFIM, lexema, linha, coluna);
 							case "var": return new Token(Tipo.SVAR, lexema, linha, coluna);
