@@ -48,19 +48,16 @@ public class PPR extends Parser {
 	public boolean analisaBloco() throws IOException {
 		buscaToken();
 		if(t.tipo == Tipo.SINICIO) {
-			System.out.println(t.tipo);
+			System.out.println(t.tipo +": " +t.lexema +' ');
 			buscaToken();
-			if(analisaEtapaDeclaracaoDeVariaveis()) {
-				buscaToken();
-				if(t.tipo == Tipo.SFIM) {
-					System.out.println(t.tipo);
-					return true;
-				} else {
-					return erro("Fim do bloco esperado");
-				}
-			}
-		} else {
-			return erro("Inicio do bloco esperado");
+		}
+		analisaEtapaDeclaracaoDeVariaveis();
+			//buscaToken();
+
+		System.out.println(t.tipo);
+		if(t.tipo == Tipo.SFIM) {
+			System.out.println(t.tipo);
+			buscaToken();			
 		}
 		return true;
 	}
@@ -69,8 +66,7 @@ public class PPR extends Parser {
 		if(t.tipo == Tipo.SVAR) {
 			System.out.println(t.tipo + " ");
 			buscaToken();
-			if (t.tipo == Tipo.SIDENTIFICADOR) {
-				System.out.println(t.tipo +": " +t.lexema +' ');
+			if (t.tipo == Tipo.SIDENTIFICADOR) {				
 				while(t.tipo == Tipo.SIDENTIFICADOR) {
 					if(analisaVariaveis()) {
 						buscaToken();
@@ -91,14 +87,12 @@ public class PPR extends Parser {
 		}
 		return true;
 	}
-	
 	public boolean analisaVariaveis() throws IOException {
 		do {
 			if(t.tipo == Tipo.SIDENTIFICADOR) {
-				//pesquisa variavel duplicada
-				//se nao encontrou entao
-				//Adiciona identficados a tabela de simbolos
-				ts.ts.put(t.lexema, t);
+				verificaDuplicidade();
+				System.out.println(t.tipo +": " +t.lexema +' ');
+				ts.ts.put(t.lexema, t);				
 				buscaToken();
 				if(t.tipo == Tipo.SVIRGULA || t.tipo == Tipo.STIPO) {
 					System.out.println(t.tipo + " ");
@@ -120,7 +114,27 @@ public class PPR extends Parser {
 			}
 		} while (t.tipo != Tipo.STIPO);
 		buscaToken();
-		//analisa tipo		
+		return analisaTipo();
+		//return true;
+	}
+	
+	public boolean analisaTipo() throws IOException {
+		if(t.tipo != Tipo.SINTEIRO && t.tipo != Tipo.SINTEIRO) {
+			return erro("Tipo não reconhecido");
+		}
+		else {
+			System.out.println(t.tipo + " ");
+			//Adiciona identficados a tabela de simbolos
+			ts.ts.put(t.lexema, t);
+		} 
+		return true;
+	}
+	
+	public boolean verificaDuplicidade() throws IOException {
+		if(ts.ts.containsKey(t.lexema))
+		{
+			return erro("Identificador já declarado no escopo.");
+		}
 		return true;
 	}
 }
