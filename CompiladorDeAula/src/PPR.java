@@ -1,8 +1,13 @@
 import java.io.IOException;
 
 public class PPR extends Parser {
+	
+	String escopo;
+	
+	
 	public PPR(String arquivo) throws IOException {
 		super(arquivo);
+		escopo = "Global";
 	}
 	
 	@Override
